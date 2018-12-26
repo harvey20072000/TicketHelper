@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="30 seconds"> 
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> 
+    <encoder>
+        <charset>UTF-8</charset>
+        <Pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</Pattern>
+    </encoder>
+  </appender>
+  
+  <!-- 按日期区分的滚动日志 -->
+  <appender name="FILE_LOG"
+	class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<file>../logs/smart_cloud_dataCenter.log</file>
+	<encoder>
+        <charset>UTF-8</charset>
+        <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>dataCenter.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+		<maxHistory>30</maxHistory>
+	</rollingPolicy>
+  </appender>
+  
+  <appender name="ERROR_LOG"
+	class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<file>../logs/smart_cloud_dataCenter_error.log</file>
+	<encoder>
+        <charset>UTF-8</charset>
+        <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">   
+      <level>ERROR</level>
+    </filter>
+	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>dataCenter_error.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+		<maxHistory>30</maxHistory>
+	</rollingPolicy>
+  </appender>
+  
+  <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+  		<username>geosatai@gmail.com</username>
+		<password>ai54652274</password>
+  		<STARTTLS>false</STARTTLS>
+        <SSL>true</SSL>
+        <smtpHost>smtp.gmail.com</smtpHost>
+        <smtpPort>465</smtpPort>
+
+		<to> geosatai@gmail.com</to>
+		<from> geosatai@gmail.com</from>
+		<subject>[%-5level] DataCenter System mail (local)</subject>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+        	<pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n%n</pattern>
+		</layout>
+		
+		<!-- 
+		<cyclicBufferTracker class="ch.qos.logback.core.spi.CyclicBufferTracker">
+	        <bufferSize>8</bufferSize>
+	        <maxNumberOfBuffers>512</maxNumberOfBuffers>
+	    </cyclicBufferTracker>
+	     -->
+	    <asynchronousSending>true</asynchronousSending>
+	    <evaluator class="tw.com.geosat.dc.model.MyErrorEvaluator">
+	      <!-- <marker>PROCESS_INT</marker> -->
+	    </evaluator>
+  </appender>
+     
+  <logger name="tw.com.geosat">
+  	<appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE_LOG" />
+    <appender-ref ref="EMAIL" />
+  </logger>
+  
+  <root level="error">
+  	<appender-ref ref="STDOUT" />
+    <appender-ref ref="ERROR_LOG" />
+    <appender-ref ref="EMAIL" />
+  </root>
+</configuration>
