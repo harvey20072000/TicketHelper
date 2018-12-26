@@ -24,7 +24,7 @@ public class TargetProp {
 	
 	public TargetProp(Properties properties) throws Exception{
 		super();
-		this.platform = new Platform(properties.getProperty("ticket.platform"));
+		this.platform = new Platform(properties);
 		this.startTime = Const.DATE_FORMAT_FULL.parse(properties.getProperty("active.time.start"));
 		if(getStartTime().getTime() < System.currentTimeMillis())
 			throw new Exception("active.time.start 請設置未來時間");

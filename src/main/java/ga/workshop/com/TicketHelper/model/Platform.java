@@ -2,6 +2,7 @@ package ga.workshop.com.TicketHelper.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Map.Entry;
 
 import ga.workshop.com.TicketHelper.utils.GoogleUtil;
@@ -16,10 +17,12 @@ public class Platform {
 	private String name;
 	private String url;
 	
-	public Platform(String input) throws Exception{
+	public Platform(Properties properties) throws Exception{
 		super();
-		if(!GoogleUtil.checkA_())
+		String input = properties.getProperty("authorized.token");
+		if(!GoogleUtil.checkA_(input))
 			throw new Exception("授權錯誤，有疑問請寄信至 harvey20072000@gmail.com");
+		input = properties.getProperty("ticket.platform");
 		if(input == null || "".equals(input))
 			throw new Exception("platform input should not be empty");
 		if(input.startsWith("http")) {

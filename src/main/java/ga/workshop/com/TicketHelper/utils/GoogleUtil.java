@@ -1,6 +1,7 @@
 package ga.workshop.com.TicketHelper.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -14,7 +15,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import lombok.extern.slf4j.Slf4j;
 import tw.com.geosat.util.WebUtil;
 
 public class GoogleUtil{
@@ -24,7 +24,15 @@ public class GoogleUtil{
 	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMdd");
 	
 	public static boolean checkA_(){
-		List<Map> list = queryGoogleDrive(A_L, "4="+A_T);
+		return checkA_(A_T);
+	}
+	
+	public static boolean checkA_(String authTokenEnc){
+		String AB = authTokenEnc;
+		try {
+			AB = new String(Base64.getDecoder().decode(AB),"utf-8");
+		} catch (Exception e) {}
+		List<Map> list = queryGoogleDrive(A_L, "4="+AB);
 		if(list == null || list.size() == 0)
 			return false;
 		try {
@@ -94,7 +102,7 @@ public class GoogleUtil{
 		return result;
 	}
 	
-	private final static String A_T = "4CbjBxNvx-uO11QivKb-7gZxGzly7H";
+	private final static String A_T = "Y0hyVG41WnY2LUk5bks4QTBDbi1xUDNZZkpCT0pL";
 	
 	private final static String A_L = 
 			"https://spreadsheets.google.com/feeds/cells/1-rRPgGWWM3zEPNtZJCLJJBN8Zr-fpUlG9GutNQJhSNE/2/public/values?alt=json";
