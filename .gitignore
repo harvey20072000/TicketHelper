@@ -1,2 +1,5 @@
 target/
 target.properties
+*.jar
+*.pptx
+*.pdf

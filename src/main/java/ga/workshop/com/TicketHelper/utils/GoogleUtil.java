@@ -88,22 +88,24 @@ public class GoogleUtil{
 				}
 			}
 		} catch (Exception e) {
-			Log.error("query google drive data fail, exception => " + e.toString());
+			// Log.error("query google drive data fail, exception => " + e.toString());
+			System.err.println("query google drive data fail, exception => " + e.toString());
 		}
 		return result;
 	}
 	
-	private final static String A_T = "O6oc3NZnF-rbaJlSeQe-wUkKJ0GG08";
+	private final static String A_T = "4CbjBxNvx-uO11QivKb-7gZxGzly7H";
 	
 	private final static String A_L = 
-			"https://spreadsheets.google.com/feeds/cells/1-rRPgGWWM3zEPNtZJCLJJBN8Zr-fpUlG9GutNQJhSNE/1/public/values?alt=json";
+			"https://spreadsheets.google.com/feeds/cells/1-rRPgGWWM3zEPNtZJCLJJBN8Zr-fpUlG9GutNQJhSNE/2/public/values?alt=json";
 	
 	private static String getIndex(JsonObject entry) {
 		try {
 			JsonObject colData = entry.getAsJsonObject("title");
 			return colData.get("$t").getAsString().trim();
 		} catch (Exception e) {
-			Log.error("get col title fail, exception => " + e.toString());
+			// Log.error("get col title fail, exception => " + e.toString());
+			System.err.println("get col title fail, exception => " + e.toString());
 		}
 		return "";
 	}
@@ -113,7 +115,8 @@ public class GoogleUtil{
 			JsonObject colData = entry.getAsJsonObject("gs$cell");
 			return colData.get("$t").getAsString().trim();
 		} catch (Exception e) {
-			Log.error("get col value fail, exception => " + e.toString());
+			// Log.error("get col value fail, exception => " + e.toString());
+			System.err.println("get col value fail, exception => " + e.toString());
 		}
 		return "";
 	}
@@ -153,8 +156,8 @@ public class GoogleUtil{
 							}
 						}
 					} catch (Exception e) {
-						Log.error("dataFilter fail exception => {}", e.toString());
-						System.out.println("dataFilter fail exception => "+ e.toString());
+						// Log.error("dataFilter fail exception => {}", e.toString());
+						System.err.println("dataFilter fail exception => "+ e.toString());
 						return false;
 					}
 				}

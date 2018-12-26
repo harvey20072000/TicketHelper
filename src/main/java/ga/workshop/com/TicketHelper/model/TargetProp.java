@@ -13,7 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TargetProp {
-	// TODO 授權
 	
 	private Platform platform;
 	private Date startTime;
@@ -27,6 +26,8 @@ public class TargetProp {
 		super();
 		this.platform = new Platform(properties.getProperty("ticket.platform"));
 		this.startTime = Const.DATE_FORMAT_FULL.parse(properties.getProperty("active.time.start"));
+		if(getStartTime().getTime() < System.currentTimeMillis())
+			throw new Exception("active.time.start 請設置未來時間");
 		this.targetDateTime = properties.getProperty("target.date");
 		// this.targetAreaFloor = properties.getProperty("target.area.floor");
 		this.targetAreaCode = properties.getProperty("target.area.code");

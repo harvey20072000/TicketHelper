@@ -22,10 +22,10 @@ public class TixCraftHacker {
 		driver.get(targetProp.getPlatform().getUrl());
 		System.out.println(driver.getTitle());
 
-//		while (System.currentTimeMillis() < (targetProp.getStartTime().getTime()-20))
-//			try {
-//				TimeUnit.MILLISECONDS.sleep(20);
-//			} catch (Exception e) {}
+		while (System.currentTimeMillis() < (targetProp.getStartTime().getTime()-20))
+			try {
+				TimeUnit.MILLISECONDS.sleep(20);
+			} catch (Exception e) {}
 		long logTime = System.currentTimeMillis();
 		
 		String currentUrl = driver.getCurrentUrl(),showId = currentUrl.substring(currentUrl.lastIndexOf("/")+1);
@@ -47,8 +47,6 @@ public class TixCraftHacker {
 		// 設定想要的場次時間(限一場)
 		boolean hasDesiredProp = false;
 		List<WebElement> trs = null;
-		System.out.println("count time start");
-		long countTime = System.currentTimeMillis();
 		for (int i = 0; i < 1000; i++)
 			try {
 				try {
@@ -56,12 +54,11 @@ public class TixCraftHacker {
 				} catch (Exception e2) {}
 				trs = driver.findElement(By.id("gameList")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
 				if(trs.size() > 0 && trs.get(0).findElements(By.tagName("td")).size() == 4) {
-					System.out.println("count time end in "+(System.currentTimeMillis()-countTime)+" ms");
 					break;
 				}
 			} catch (Exception e) {}
 		System.out.println("選場次-tbody完成");
-		countTime = System.currentTimeMillis();
+		
 		List<WebElement> tempTrs = new LinkedList<>();
 		for (int i = 0; i < 1000; i++)
 			try {
@@ -81,7 +78,6 @@ public class TixCraftHacker {
 				if(hasDesiredProp)
 					break;
 			} catch (Exception e) {}
-		System.out.printf("選場次-元素載入成功 in %s ms%n",System.currentTimeMillis()-countTime);
 		if (!hasDesiredProp) {
 			System.out.println("tempTrs size:"+tempTrs.size());
 			if(!tempTrs.isEmpty())
@@ -96,7 +92,6 @@ public class TixCraftHacker {
 		if((currentUrl = driver.getCurrentUrl()).substring(currentUrl.indexOf(showId)).split("/").length == 2) {
 			// 設定想要的區域(票價)
 			hasDesiredProp = false;
-			countTime = System.currentTimeMillis();
 			List<WebElement> areas = null;
 			for (int i = 0; i < 1000; i++)
 				try {
@@ -105,7 +100,6 @@ public class TixCraftHacker {
 					} catch (Exception e2) {}
 					areas = driver.findElements(By.className("zone")).get(0).findElements(By.tagName("ul"));
 					if(areas.size() > 0) {
-						System.out.printf("選區域-元素載入成功 in %s ms%n",System.currentTimeMillis()-countTime);
 						break;
 					}
 				} catch (Exception e) {}

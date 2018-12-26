@@ -27,7 +27,7 @@ public class App {
 		}
 	}
 	
-	private void run() {
+	private void run() throws Exception{
 		String rootPath = System.getProperty("user.dir");
 		TargetProp targetProp = initProps(rootPath);
 		WebDriver driver = null;
@@ -48,7 +48,7 @@ public class App {
 		}
 	}
 	
-	private TargetProp initProps(String path){
+	private TargetProp initProps(String path) throws Exception{
 		FileInputStream fis = null;
 		TargetProp targetProp = null;
 		try {
@@ -57,10 +57,10 @@ public class App {
 			InputStreamReader isr = new InputStreamReader(fis, Const.DEFAULT_CHARSET);
 			properties.load(isr);
 			targetProp = new TargetProp(properties);
-			return targetProp;
 		} catch (Exception e) {
-			Log.error("initProps fail, exception => {}",e);
+			// Log.error("initProps fail, exception => {}",e);
 			System.out.println("initProps fail, exception => "+e);
+			throw e;
 		}finally {
 			try {
 				if(fis != null)
