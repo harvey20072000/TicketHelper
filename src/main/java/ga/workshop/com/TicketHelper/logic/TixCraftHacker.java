@@ -22,13 +22,15 @@ public class TixCraftHacker {
 		driver.get(targetProp.getPlatform().getUrl());
 		System.out.println(driver.getTitle());
 
-		while (System.currentTimeMillis() < (targetProp.getStartTime().getTime()-20))
-			try {
-				TimeUnit.MILLISECONDS.sleep(20);
-			} catch (Exception e) {}
+//		while (System.currentTimeMillis() < (targetProp.getStartTime().getTime()-20))
+//			try {
+//				TimeUnit.MILLISECONDS.sleep(20);
+//			} catch (Exception e) {}
 		long logTime = System.currentTimeMillis();
 		
 		String currentUrl = driver.getCurrentUrl(),showId = currentUrl.substring(currentUrl.lastIndexOf("/")+1);
+		List<WebElement> tempElements = null;
+		
 		// 等時間到就執行(點到有tag a出現才點) 10ms點一次
 		List<WebElement> listInlineElements = null;
 		for (int i = 0; i < 1000; i++)
@@ -64,28 +66,31 @@ public class TixCraftHacker {
 		for (int i = 0; i < 1000; i++)
 			try {
 				try {
-					TimeUnit.MILLISECONDS.sleep(50);
+					TimeUnit.MILLISECONDS.sleep(25);
 				} catch (Exception e2) {}
 				for (WebElement tr : trs) {
-					if(tr.findElement(By.xpath("//input[@type='button']")) != null) {
+					if((tempElements = tr.findElements(By.tagName("td"))).get(3).findElements(By.tagName("input")).size() > 0) {
 						tempTrs.add(tr);
-						if (matchTargetDate(tr.findElements(By.tagName("td")).get(0).getText(),targetProp.getTargetDateTime())) {
-							tr.findElement(By.xpath("//input[@type='button']")).click();
+						if (matchTargetDate(tempElements.get(0).getText(),targetProp.getTargetDateTime())) {
+							tempElements.get(3).findElements(By.tagName("input")).get(0).click();
 							hasDesiredProp = true;
 							break;
 						}
 					}
 				}
+				if(hasDesiredProp)
+					break;
 			} catch (Exception e) {}
 		System.out.printf("選場次-元素載入成功 in %s ms%n",System.currentTimeMillis()-countTime);
-		if (!hasDesiredProp)
+		if (!hasDesiredProp) {
 			System.out.println("tempTrs size:"+tempTrs.size());
 			if(!tempTrs.isEmpty())
-				tempTrs.get(new Random().nextInt(tempTrs.size())).findElement(By.xpath("//input[@type='button']")).click();
+				tempTrs.get(new Random().nextInt(tempTrs.size())).findElements(By.tagName("td")).get(3).findElements(By.tagName("input")).get(0).click();
 			else {
 				Log.info("Sorry, there's no show can be reserved.");
 				return;
 			}
+		}
 		System.out.println("選場次完成");
 		
 		if((currentUrl = driver.getCurrentUrl()).substring(currentUrl.indexOf(showId)).split("/").length == 2) {
@@ -98,7 +103,7 @@ public class TixCraftHacker {
 					try {
 						TimeUnit.MILLISECONDS.sleep(25);
 					} catch (Exception e2) {}
-					areas = driver.findElements(By.xpath("//ul[@class='area-list']"));
+					areas = driver.findElements(By.className("zone")).get(0).findElements(By.tagName("ul"));
 					if(areas.size() > 0) {
 						System.out.printf("選區域-元素載入成功 in %s ms%n",System.currentTimeMillis()-countTime);
 						break;
@@ -197,9 +202,9 @@ public class TixCraftHacker {
 		list = new LinkedList<>(tempList);
 		tempList.clear();
 		System.out.println(condition+" done("+System.currentTimeMillis());
-		
+
+		condition = targetProp.getTargetAreaPrices().toString();
 		if(targetProp.getTargetAreaPrices().size() == 1) {
-			condition = String.valueOf(targetProp.getTargetAreaPrices().get(0));
 			for(WebElement element:list)
 				if(element.getText().contains(condition))
 					tempList.add(element);
@@ -208,9 +213,9 @@ public class TixCraftHacker {
 				Pattern pattern = Pattern.compile("\\d{3,7}");
 				Matcher matcher = pattern.matcher(element.getText());
 				Integer tmp = null;
-				if(!(matcher.find() && 
+				if(matcher.find() && 
 						(tmp = Integer.parseInt(matcher.group())) >= targetProp.getTargetAreaPrices().get(0) &&
-						tmp <= targetProp.getTargetAreaPrices().get(1)))
+						tmp <= targetProp.getTargetAreaPrices().get(1))
 					tempList.add(element);
 			}
 		}
