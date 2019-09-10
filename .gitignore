@@ -1,6 +1,5 @@
 target/
-target.properties
+.classpath
+.project
+.settings/
 *.jar
-*.pptx
-*.pdf
-ticket helper package/
