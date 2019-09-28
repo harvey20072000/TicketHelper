@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -392,5 +393,15 @@ public class Util {
 		if(input != null)
 			return input.toString();
 		return "";
+	}
+	
+	/**
+	 * 使執行續暫停
+	 * @param milliSecond
+	 */
+	public static void currentThreadSleep(long milliSecond) {
+		try {
+			TimeUnit.MILLISECONDS.sleep(milliSecond);
+		} catch (Exception e) {}
 	}
 }

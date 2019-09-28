@@ -2,8 +2,8 @@ package ga.workshop.com.TicketHelper.model;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import ga.workshop.com.TicketHelper.utils.GoogleUtil;
 import lombok.Getter;

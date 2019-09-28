@@ -32,13 +32,12 @@ public class App {
 		TargetProp targetProp = initProps(rootPath);
 		WebDriver driver = null;
 		
-		// TODO 內建授權
 		// TODO 強制關閉程式機制
 		
 		// D:/Program File/x32/chromedriver_win32/chromedriver.exe
 		System.setProperty("webdriver.chrome.driver", String.format("%s\\%s", rootPath,"chromedriver.exe"));
 		driver = new ChromeDriver(new ChromeOptions());
-		
+		Log.info(String.format("已初始化參數 => 搶票開始時間{ %s }, 座位區域{ %s }, 樓層{ %s }, 價位{ %s }, 場次{ %s }, 張數{ %s }", targetProp.getStartTime(), targetProp.getTargetAreaCode(), targetProp.getTargetAreaFloor(), targetProp.getTargetAreaPrices(), targetProp.getTargetDateTime(), targetProp.getTargetNums()));
 		switch (targetProp.getPlatform().getId()) {
 		case "tixcraft":
 			new TixCraftHacker().hack(driver, targetProp);

@@ -165,7 +165,7 @@ public class GoogleUtil{
 						}
 					} catch (Exception e) {
 						// Log.error("dataFilter fail exception => {}", e.toString());
-						System.err.println("dataFilter fail exception => "+ e.toString());
+						// System.err.println("dataFilter fail exception => "+ e.toString());
 						return false;
 					}
 				}

@@ -26,8 +26,10 @@ public class TargetProp {
 		super();
 		this.platform = new Platform(properties);
 		this.startTime = Const.DATE_FORMAT_FULL.parse(properties.getProperty("active.time.start"));
-		if(getStartTime().getTime() < System.currentTimeMillis())
+		if(getStartTime().getTime() < System.currentTimeMillis()) {
 			throw new Exception("active.time.start 請設置未來時間");
+			//Log.debug("active.time.start 設置成過去時間");
+		}
 		this.targetDateTime = properties.getProperty("target.date");
 		// this.targetAreaFloor = properties.getProperty("target.area.floor");
 		this.targetAreaCode = properties.getProperty("target.area.code");
